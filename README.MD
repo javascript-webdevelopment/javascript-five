@@ -358,3 +358,105 @@ console.log(tesla)
 After console logging the instances, we can see that the `honk` method no longer exists on that object. So how does the object have access to that prototype method?
 
 This is where `prototypal inheritance` comes into play.
+
+## Prototypal Inheritance
+
+In javascript all functions are really just objects behind the scenes. This means that functions can have properties. Every function has a property called `prototype`, which is also another object that will hold methods inside of it.
+
+When we invoke a function that exists on an object, let's call that object `car`. The browser will check the `car` object for the function, if it's not in that object, the browser will look into the `prototype` object that is a property of the `car` object. It will go up the chain of objects and their prototype properties until it feither finds the function or it doesn't find it. If it doesn't find it, that means the function is undefined.
+
+A constructor function can inherit the prototype from another constructor function. This can be complicated and can get confusing, but it's good to be introduced to it. This is what that `extends` keyword is doing behind the scenes in `classes`.
+
+```js
+function Car(make, model) {
+    this.make = make;
+    this.model = model;
+}
+
+Car.prototype.honk = function() {
+    console.log(`The ${this.make} goes Beep Beep!`);
+}
+
+const myCar = new Car('Tesla', 'Model X');
+
+// We can get the prototype object from an instance using the Object.getPrototypeOf method
+console.log(Object.getPrototypeOf(myCar)); // Car {honk: [function]}
+```
+
+Now let's create a `SuperCar` constructor that will inherit from the `Car` constructor and adds a v12 engine to it.
+
+There are three steps we will need to follow to make this happen.
+
+1. We will pass the current object through the `Car` constructor function to gain it's functionality. Then we will add the `engine` property that is only available to super cars. 
+
+2. We will then set the constructor functions protoype object to a new object created from the prototype of the object we want to inherit from. In this case it will be the `Car` prototype.
+
+3. We will now set the constructor function appropriately for the clarity on which constructor function is responsible for making the object.
+
+```js
+// Step One:
+function SuperCar(make, model){
+    // pass the current object in with the arguments we recieved to gain the Car functionality
+    Car.call(this, make, model);
+    // then set the engine property to v12
+    this.engine = 'v12';
+}
+
+// Step Two:
+SuperCar.prototype = Object.create(Car.prototype);
+// The Object.create() method creates a new object, using an existing object as the prototype of the newly created object.
+
+// Step Three:
+SuperCar.prototype.constructor = SuperCar;
+```
+
+Now let's use our SuperCar constructor that is inehriting the prototype properties from another constructor function.
+
+```js
+// Create a new instance of the supercar
+const mySuperCar = new SuperCar('Tesla', 'Model Super');
+// We can now use the prototype methods that we have inherited from Car
+mySuperCar.honk();
+// We can add more protype methods to the supercar
+SuperCar.prototype.rev = function(){
+    console.log(`You have revved the ${this.engine} engine`);
+}
+// Then we can use the prototype method
+mySuperCar.rev();
+// Now if we create a prototype method on Car, our SuperCar will also ineherit it
+Car.prototype.oilChange = function(){
+    console.log(`You have changed the oil for your ${this.make} ${this.model}`);
+}
+// We can now use that method
+mySuperCar.oilChange();
+```
+
+There is alot going on here and this is why `classes` were introduced to javascript. They are what is known as `syntactic sugar` because they make this functionality simple using the `extends` keyword and `super` function.
+
+Let's take a look at what we just did, but in class syntax.
+
+```js
+class Car {
+    constructor(make, model){
+        this.make = make;
+        this.model = model;
+    }
+
+    honk(){
+        console.log(`The ${this.make} goes Beep Beep!`);
+    }
+}
+
+// Now implement the inheritance
+
+class SuperCar extends Car {
+    constructor(make, model){
+        // call super to invoke the Car's constructor
+        super(make, model);
+        // add engine prop to this instance
+        this.engine = 'v12';
+    }
+}
+```
+
+See how much easier it was?
