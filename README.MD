@@ -88,3 +88,102 @@ function modulePattern() {
 var module1 = modulePattern();
 ```
 
+This time we are returning multiple functions, rather than just one function.
+
+### Closure Practice Problems
+
+Now let's practice creating some closure functions with different use cases.
+
+Let's first create a closure function to make a sandwhich.
+
+```js
+function createSandwhich(){
+    // this will keep track 
+    const sandwhichIngredients = [];
+    // thefunction that gets returned will add ingredients to the sandwhich
+    function addIngredient(ingredient){
+        sandwhichIngredients.push(ingredient);
+        return sandwhichIngredients;
+    }
+    // return the function
+    return addIngredient;
+}
+```
+
+We now have a sandwhich maker closure function that we can easily re-use to create new sandwhiches. Let's go ahead an now make a few.
+
+```js
+// make the sandwhich
+let tayteSandwhich = createSandwhich();
+// add ingredients
+tayteSandwhich('Meatballs');
+tayteSandwhich('Marinara Sauce');
+tayteSandwhich('Parmasen Cheese');
+```
+
+```js
+// make the sandwhich
+let mattSandwhich = createSandwhich();
+// add ingredients
+mattSandwhich('Ham')
+mattSandwhich('Cheese')
+```
+
+Now let's revamp our closure function to add more functionality by following the module pattern.
+
+```js
+function createSandwhich(){
+    // this will keep track 
+    const sandwhichIngredients = [];
+
+    // add ingredients
+    function addIngredient(ingredient){
+        sandwhichIngredients.push(ingredient);
+        return sandwhichIngredients;
+    };
+    
+    // remove ingredients
+    function removeIngredient(){
+        // check to make sure the ingredient exists
+        // this will return the index value or -1 if not found
+        let ingredientIndex = sandwhichIngredients.indexOf(ingredient);
+        // check to see if item is missing
+        if(ingredientIndex === -1){
+            // return an error message
+            return 'Sorry, that ingredient does not exist. Pleas try another!'
+        } else {
+            // if it is found, remove the item
+            sandwhichIngredients.splice(ingredientIndex, 1);
+            return sandwhichIngredients;
+        };
+    };
+
+    // read the ingredients
+    function readIngredients(){
+        return sandwhichIngredients;
+    };
+
+    // create the module or object thatv will be returned
+    return {
+        addIngredient,
+        removeIngredient,
+        readIngredients
+    };
+}
+```
+
+Let's used our revamped sandwhich maker closure function.
+
+```js
+// make the sandwhich
+let tayteSandwhich = createSandwhich();
+// add ingredients
+tayteSandwhich.addIngredient('Meatballs');
+tayteSandwhich.addIngredient('Marinara Sauce');
+tayteSandwhich.addIngredient('Parmasen Cheese');
+// remove ingredient
+tayteSandwhich.removeIngredient('Meatballs');
+// read the ingredients on the sandwhich
+tayteSandwhich.reaadIngredients();
+```
+
