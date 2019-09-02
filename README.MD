@@ -187,3 +187,60 @@ tayteSandwhich.removeIngredient('Meatballs');
 tayteSandwhich.reaadIngredients();
 ```
 
+Now let's create another closure function that has a little more functionality. This time we will create a calculator that we can use to perform basic math operations for us. We will use the `modular pattern` to house our methods.
+
+```js
+function calculator(){
+  // create a starting value at zero
+  let value = 0;
+  // return a module that will contain methods for functionality
+  return {
+    add(num){
+      return value += num;
+    },
+    subtract(num){
+      return value -= num;
+    },
+    multiply(num){
+      return value *= num;
+    },
+    divide(num){
+      return value /= num;
+    }
+  };
+};
+```
+
+Let's use the new calculator that we just created.
+
+```js
+let ti84 = calculator();
+// logging the ti84 should return the module or object that encases the different methods we can execute
+console.log(ti84);
+// lets use the new texas instrument YEEEHAW 🤠
+ti84.add(10);
+ti84.subtract(5);
+ti84.multiply(2);
+ti84.divide(2);
+```
+
+The final closure method that we will now create will be a bank account. We want this closure function to have full functionality of a bank account. We want to be able to deposit, withdraw, and check our balance. Let's make sure we use the `modular pattern` so we can return multiple functions.
+
+```js
+function createAccount(){
+  // define a starting balance
+  let balance = 0;
+  // return a module with methods to deposit, withdraw, and check balance
+  return {
+    deposit(amount){
+      return balance += amount;
+    },
+    withdraw(amount){
+      return balance -= amount;
+    },
+    checkBalance(){
+      return 'Account has a balance of ' + balance;
+    }
+  }
+};
+```
