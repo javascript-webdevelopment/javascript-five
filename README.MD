@@ -4,7 +4,7 @@ In this lecture we cover closures, prototypal inheritance, and constructor funct
 
 ## Closures
 
-A `closure function` is a function that is returned from another function. The inner function that is returned will rely on data that is declared in the outher functions scope.
+A `closure function` is a function that is returned from another function. The inner function that is returned will rely on data that is declared in the outer functions scope.
 
 Here is an example.
 
@@ -409,6 +409,8 @@ SuperCar.prototype = Object.create(Car.prototype);
 // Step Three:
 SuperCar.prototype.constructor = SuperCar;
 ```
+
+> The Object.create() method creates a new object, using an existing object as the prototype of the newly created object.
 
 Now let's use our SuperCar constructor that is inehriting the prototype properties from another constructor function.
 
